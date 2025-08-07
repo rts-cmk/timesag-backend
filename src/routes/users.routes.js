@@ -4,7 +4,11 @@ import { authenticateToken } from '../middleware.js'
 export default function (router) {
     router.get('/users', authenticateToken, async (req, res) => {
         const users = await prisma.user.findMany()
-        res.json(users)
+        const usersWithoutPassword = users.map(user => {
+            const { password, ...userWithoutPassword } = user
+            return userWithoutPassword
+        })
+        res.json(usersWithoutPassword)
     })
 
     router.get('/users/:id', authenticateToken, async (req, res) => {
