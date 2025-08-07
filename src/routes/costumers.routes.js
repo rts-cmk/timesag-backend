@@ -1,3 +1,4 @@
+import prisma from '../config/prismaClient'
 import { authenticateToken } from './middleware.js'
 
 export default function (router) {
