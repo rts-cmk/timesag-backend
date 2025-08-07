@@ -1,8 +1,7 @@
 import { Router } from "express";
-import usersRoutes from "./routes/users.routes";
-import costumersRoutes from "./routes/costumers.routes";
-import authRoutes from "./routes/auth.routes";
-
+import costumersRoutes from "./routes/costumers.routes.js";
+import authRoutes from "./routes/auth.routes.js";
+import usersRoutes from "./routes/users.routes.js";
 
 
 
