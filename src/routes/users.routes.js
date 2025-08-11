@@ -23,4 +23,30 @@ export default function (router) {
         const { password, ...userwithoutpassword } = user || {}
         res.json(userwithoutpassword)
     })
+
+
+
+    
+    router.post('/users', authenticateToken, async (req, res) => {
+        const { email, name, password } = req.body
+        const user = await prisma.user.create({
+            data: {
+                email,
+                name,
+                password, // Note: Ensure to hash the password before storing it in production
+            },
+        })
+        res.status(201).json(user)
+    })
+
+    router.delete('/users/:id', authenticateToken, async (req, res) => {
+        await prisma.user.delete({
+            where: { id: req.params.id },
+        })
+        return res.status(204).json({ message: 'user deleted' })
+    })
+
+
+
+
 }
