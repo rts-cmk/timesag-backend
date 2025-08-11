@@ -18,4 +18,45 @@ export default function (router) {
         }
         res.json(timeentry)
     })
+
+
+    router.post('/timeentries', authenticateToken, async (req, res) => {
+        const { taskId, userId, date, timeSpent, comment } = req.body
+        const timeentry = await prisma.timeentry.create({
+            data: {
+                taskId,
+                userId,
+                date,
+                timeSpent,
+                comment,
+            },
+        })
+        res.status(201).json(timeentry)
+    })
+
+    router.delete('/timeentries/:id', authenticateToken, async (req, res) => {
+        await prisma.timeentry.delete({
+            where: { id: req.params.id },
+        })
+            return res.status(204).json({ message: 'timeentry deleted' })
+    })
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
