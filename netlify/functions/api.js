@@ -12,8 +12,17 @@ if (!process.env.JWT_SECRET) {
 }
 
 const app = express();
-app.use(express.json())
-app.use(cors())
-app.use(router)
 
-export const handler = serverless(app);
+// Configure middleware with explicit options for serverless
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
+
+app.use(router);
+
+export const handler = serverless(app, {
+  binary: false
+});
