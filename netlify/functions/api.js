@@ -3,6 +3,14 @@ import serverless from "serverless-http";
 import router from "../../src/router.js";
 import cors from "cors";
 
+// Ensure environment variables are available
+if (!process.env.DATABASE_URL) {
+  console.error('DATABASE_URL is not set');
+}
+if (!process.env.JWT_SECRET) {
+  console.error('JWT_SECRET is not set');
+}
+
 const app = express();
 app.use(express.json())
 app.use(cors())
