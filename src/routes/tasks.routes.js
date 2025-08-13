@@ -1,9 +1,6 @@
 import prisma from '../config/prismaClient.js'
 import { authenticateToken } from '../middleware.js'
 
-import prisma from '../config/prismaClient.js'
-import { authenticateToken } from '../middleware.js'
-
 export default function (router) {
     router.get('/tasks', authenticateToken, async (req, res) => {
         const tasks = await prisma.task.findMany()
