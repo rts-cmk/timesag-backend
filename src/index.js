@@ -4,8 +4,9 @@ import prisma from './config/prismaClient.js'
 import cors from 'cors'
 
 const app = express()
-app.use(express.json())
 app.use(cors())
+app.use(express.json({ limit: '10000kb' }))
+app.use(express.urlencoded({ extended: true }))
 app.use(router)
 
 app.listen(3000, () =>

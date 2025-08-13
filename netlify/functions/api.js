@@ -14,12 +14,9 @@ if (!process.env.JWT_SECRET) {
 const app = express();
 
 // Configure middleware with explicit options for serverless
-app.use(cors({
-  origin: true,
-  credentials: true
-}));
+app.use(cors());
 
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '10000kb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Add debugging middleware
