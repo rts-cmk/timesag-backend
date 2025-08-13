@@ -16,8 +16,7 @@ const app = express();
 // Configure middleware with explicit options for serverless
 app.use(cors());
 
-app.use(express.json({ limit: '10000kb' }));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Add debugging middleware
 app.use((req, res, next) => {
