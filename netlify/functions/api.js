@@ -1,3 +1,4 @@
+import { Router } from "express";
 import express from "express";
 import serverless from "serverless-http";
 import router from "../../src/router.js";
@@ -13,33 +14,35 @@ if (!process.env.JWT_SECRET) {
 
 const app = express();
 
-// Configure middleware with explicit options for serverless
-app.use(cors());
-
-// Custom body parser for Netlify Functions
+// Raw body parser for debugging
 app.use((req, res, next) => {
-  if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
-    // For Netlify Functions, the body might be in req.body already
-    if (typeof req.body === 'string') {
+  let body = '';
+  req.on('data', chunk => {
+    body += chunk.toString();
+  });
+  req.on('end', () => {
+    console.log('Raw body received:', body);
+    if (body && req.headers['content-type']?.includes('application/json')) {
       try {
-        req.body = JSON.parse(req.body);
+        req.body = JSON.parse(body);
+        console.log('Parsed body:', req.body);
       } catch (e) {
-        console.error('Failed to parse JSON body:', e);
+        console.error('JSON parse error:', e);
+        req.body = {};
       }
     }
-  }
-  next();
+    next();
+  });
 });
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 // Add debugging middleware
 app.use((req, res, next) => {
   console.log('Request method:', req.method);
   console.log('Request path:', req.path);
   console.log('Request headers:', req.headers);
-  console.log('Request body:', req.body);
+  console.log('Final request body:', req.body);
   console.log('Body type:', typeof req.body);
   next();
 });
