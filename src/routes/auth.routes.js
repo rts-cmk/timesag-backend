@@ -2,8 +2,6 @@ import prisma from '../config/prismaClient.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
-
-
 export default function(router) {
     router.post('/register', async (req, res) => {
   const user = await prisma.user.create({
@@ -23,24 +21,22 @@ router.post('/login', async (req, res) => {
     console.log('Request body:', req.body);
     console.log('Request headers:', req.headers);
     
-    const { email, password: inputPassword } = req.body;
-    
-    if (!email || !inputPassword) {
+    if (!req.body.email || !req.body.password) {
       return res.status(400).json({ 
         message: 'Email and password are required',
-        received: req.body
+        received: { email: req.body.email, password: req.body.password }
       });
     }
 
     const user = await prisma.user.findUnique({
-      where: { email: email },
+      where: { email: req.body.email },
     })
     
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' })
     }
     
-    const isValid = await bcrypt.compare(inputPassword, user.password)
+    const isValid = await bcrypt.compare(req.body.password, user.password)
     if (!isValid) {
       return res.status(401).json({ message: 'Invalid email or password' })
     }
