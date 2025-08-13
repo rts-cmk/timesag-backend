@@ -14,12 +14,23 @@ if (!process.env.JWT_SECRET) {
 const app = express();
 
 // Configure middleware with explicit options for serverless
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
 app.use(cors({
   origin: true,
   credentials: true
 }));
+
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
+
+// Add debugging middleware
+app.use((req, res, next) => {
+  console.log('Request method:', req.method);
+  console.log('Request path:', req.path);
+  console.log('Request headers:', req.headers);
+  console.log('Request body:', req.body);
+  console.log('Raw body:', req.rawBody);
+  next();
+});
 
 app.use(router);
 
