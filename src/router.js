@@ -6,9 +6,6 @@ import projectsRoutes from "./routes/projects.routes.js";
 import tasksRoutes from "./routes/tasks.routes.js";
 import timeentriesRoutes from "./routes/timeentries.routes.js";
 
-
-
-
 const router = Router();
 
 usersRoutes(router);
