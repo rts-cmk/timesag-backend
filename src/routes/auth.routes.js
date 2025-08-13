@@ -18,20 +18,41 @@ export default function(router) {
 })
 
 router.post('/login', async (req, res) => {
-  const user = await prisma.user.findUnique({
-    where: { email: req.body.email },
-  })
-  if (!user) {
-    return res.status(401).json({ message: 'Invalid email or password' })
-  }
-  const isValid = await bcrypt.compare(req.body.password, user.password)
-  if (!isValid) {
-    return res.status(401).json({ message: 'Invalid email or password' })
-  }
-  const { password, ...userwithoutpassword } = user
+  try {
+    // Debug logging
+    console.log('Request body:', req.body);
+    console.log('Request headers:', req.headers);
+    
+    const { email, password: inputPassword } = req.body;
+    
+    if (!email || !inputPassword) {
+      return res.status(400).json({ 
+        message: 'Email and password are required',
+        received: { email: !!email, password: !!inputPassword }
+      });
+    }
 
-  const token = jwt.sign({ userId: user.id, userName: user.name }, process.env.JWT_SECRET, { expiresIn: '8h' })
+    const user = await prisma.user.findUnique({
+      where: { email: email },
+    })
+    
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid email or password' })
+    }
+    
+    const isValid = await bcrypt.compare(inputPassword, user.password)
+    if (!isValid) {
+      return res.status(401).json({ message: 'Invalid email or password' })
+    }
+    
+    const { password, ...userwithoutpassword } = user
 
-  res.json({ ...userwithoutpassword, token })
+    const token = jwt.sign({ userId: user.id, userName: user.name }, process.env.JWT_SECRET, { expiresIn: '8h' })
+
+    res.json({ ...userwithoutpassword, token })
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
 })
 }
