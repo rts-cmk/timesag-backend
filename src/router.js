@@ -1,5 +1,5 @@
 import { Router } from "express";
-import costumersRoutes from "./routes/costumers.routes.js";
+import customersRoutes from "./routes/customers.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import usersRoutes from "./routes/users.routes.js";
 import projectsRoutes from "./routes/projects.routes.js";
@@ -9,7 +9,7 @@ import timeentriesRoutes from "./routes/timeentries.routes.js";
 const router = Router();
 
 usersRoutes(router);
-costumersRoutes(router);
+customersRoutes(router);
 authRoutes(router);
 projectsRoutes(router);
 tasksRoutes(router);
