@@ -2,12 +2,12 @@ import prisma from '../config/prismaClient.js'
 import { authenticateToken } from '../middleware.js'
 
 export default function (router) {
-    router.get('/costumers', authenticateToken, async (req, res) => {
+    router.get('/customers', authenticateToken, async (req, res) => {
         const customers = await prisma.customer.findMany()
         res.json(customers)
     })
 
-    router.get('/costumers/:id', authenticateToken, async (req, res) => {
+    router.get('/customers/:id', authenticateToken, async (req, res) => {
         const customer = await prisma.customer.findUnique({
             where: { id: req.params.id },
         })
@@ -18,7 +18,7 @@ export default function (router) {
     })
 
 
-    router.post('/costumers', authenticateToken, async (req, res) => {
+    router.post('/customers', authenticateToken, async (req, res) => {
         const { company, email, phone, address1, address2, postalCode, city, contactperson, contactemail } = req.body
         const customer = await prisma.customer.create({
             data: {
@@ -36,7 +36,7 @@ export default function (router) {
         res.status(201).json(customer)
     })
 
-    router.delete('/costumers/:id', authenticateToken, async (req, res) => {
+    router.delete('/customers/:id', authenticateToken, async (req, res) => {
         await prisma.customer.delete({
             where: { id: req.params.id },
         })
