@@ -10,6 +10,9 @@ export default function (router) {
     router.get('/customers/:id', authenticateToken, async (req, res) => {
         const customer = await prisma.customer.findUnique({
             where: { id: req.params.id },
+            include: {
+                projects: true, // Include related projects if needed
+            }
         })
         if (!customer) {
             return res.status(404).json({ message: 'customer not found' })
