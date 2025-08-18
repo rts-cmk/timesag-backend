@@ -14,6 +14,10 @@ export default function (router) {
     router.get('/projects/:id', authenticateToken, async (req, res) => {
         const project = await prisma.project.findUnique({
             where: { id: req.params.id },
+            include: {
+                customer: true, // Include related customer if needed
+                tasks: true, // Include related tasks if needed
+            }
         })
         if (!project) {
             return res.status(404).json({ message: 'project not found' })
