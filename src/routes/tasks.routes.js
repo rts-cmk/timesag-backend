@@ -12,12 +12,13 @@ export default function (router) {
             {
                 where: { id: req.params.id },
             include: {
-                customer: true, // Include related customer if needed
-                project: true, // Include related project if needed
-                assignedUser: true, // Include related assigned user if needed
-                timeentries: true, // Include related timeentries if needed
+                project: {
+                    include: {
+                        customer: true // Include related project if needed
+                    }
+                }
             }
-            }
+        }
         )
         if (!task) {
             return res.status(404).json({ message: 'task not found' })
