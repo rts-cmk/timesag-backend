@@ -11,6 +11,12 @@ export default function (router) {
         const task = await prisma.task.findUnique(
             {
                 where: { id: req.params.id },
+            include: {
+                customer: true, // Include related customer if needed
+                project: true, // Include related project if needed
+                assignedUser: true, // Include related assigned user if needed
+                timeentries: true, // Include related timeentries if needed
+            }
             }
         )
         if (!task) {
