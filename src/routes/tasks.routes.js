@@ -1,4 +1,3 @@
-import e from 'cors'
 import prisma from '../config/prismaClient.js'
 import { authenticateToken } from '../middleware.js'
 
@@ -13,13 +12,9 @@ export default function (router) {
             {
                 where: { id: req.params.id },
                 include: {
-                    assignedTo: true, // Include related user if needed
+                    assignedTo: true,
                     estimatedTime: true,
-                    project: {
-                        include: {
-                            customer: true // Include related project if needed
-                        }
-                    }
+                    project: { include: { customer: true } }
                 }
             }
         )
@@ -37,7 +32,9 @@ export default function (router) {
                 description,
                 projectId,
                 estimate,
-                assignedTo,
+                assignedTo: {
+                    connect: assignedTo.map(id => ({ id }))
+                }
             },
         })
         res.status(201).json(task)

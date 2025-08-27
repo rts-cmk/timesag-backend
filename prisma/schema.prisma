@@ -52,7 +52,7 @@ model Task {
     title       String
     description String?
     projectId   String
-    estimate    Int
+    estimate    Float
     assignedTo  User[]      @relation("AssignedTasks")
     status      String      @default("venter")
     createdAt   DateTime    @default(now())
