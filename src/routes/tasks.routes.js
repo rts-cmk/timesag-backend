@@ -1,3 +1,4 @@
+import e from 'cors'
 import prisma from '../config/prismaClient.js'
 import { authenticateToken } from '../middleware.js'
 
@@ -11,14 +12,16 @@ export default function (router) {
         const task = await prisma.task.findUnique(
             {
                 where: { id: req.params.id },
-            include: {
-                project: {
-                    include: {
-                        customer: true // Include related project if needed
+                include: {
+                    assignedTo: true, // Include related user if needed
+                    estimatedTime: true,
+                    project: {
+                        include: {
+                            customer: true // Include related project if needed
+                        }
                     }
                 }
             }
-        }
         )
         if (!task) {
             return res.status(404).json({ message: 'task not found' })
