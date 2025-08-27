@@ -17,8 +17,7 @@ model User {
     createdAt     DateTime    @default(now())
     updatedAt     DateTime    @updatedAt
     timeEntries   TimeEntry[]
-    assignedTasks Task[]      @relation("AssignedUsers") // <-- Add this line
-    taskId        String?
+    assignedTasks Task[]      @relation("AssignedTasks")
 }
 
 model Customer {
@@ -54,7 +53,7 @@ model Task {
     description String?
     projectId   String
     estimate    Int
-    assignedTo  User[]      @relation("AssignedUsers") // <-- Add this line
+    assignedTo  User[]      @relation("AssignedTasks")
     status      String      @default("venter")
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @updatedAt
