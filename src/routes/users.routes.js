@@ -17,10 +17,7 @@ export default function (router) {
                 where: { id: req.params.id },
                 include: {
                     projects: true,
-                    assignedTasks: true,
                     customers: true,
-                    tasks: true,
-                    timeentries: true,
                 }
             }
         )
