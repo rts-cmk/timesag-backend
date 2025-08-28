@@ -3,14 +3,7 @@ import { authenticateToken } from '../middleware.js'
 
 export default function (router) {
     router.get('/tasks', authenticateToken, async (req, res) => {
-        const tasks = await prisma.task.findMany(
-            {
-                where: { id: req.params.id },
-                include: {
-                    assignedTo: { include: { timeEntries: true } }
-                }
-            }
-        )
+        const tasks = await prisma.task.findMany()
         res.json(tasks)
     })
 
