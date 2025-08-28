@@ -12,8 +12,11 @@ export default function (router) {
             {
                 where: { id: req.params.id },
                 include: {
-                    assignedTo: true,
-                    estimatedTime: true,
+                    assignedTo: {
+                        include: {
+                            timeEntries: true
+                        }
+                    },
                     project: { include: { customer: true } }
                 }
             }
