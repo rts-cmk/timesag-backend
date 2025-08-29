@@ -23,7 +23,23 @@ export default function (router) {
     })
 
     router.post('/tasks', authenticateToken, async (req, res) => {
-        const { title, description, projectId, estimate, assignedTo } = req.body
+        const { title, description, projectId, estimate, assignedTo = [] } = req.body;
+
+        // Fetch users linked to the project
+        const project = await prisma.project.findUnique({
+            where: { id: projectId },
+            include: { users: true } // adjust if your schema is different
+        });
+
+        // Combine provided assignedTo with project users
+        const allAssignedIds = [
+            ...assignedTo,
+            ...(project?.users?.map(user => user.id) || [])
+        ];
+
+        // Remove duplicates
+        const uniqueAssignedIds = [...new Set(allAssignedIds)];
+
         const task = await prisma.task.create({
             data: {
                 title,
@@ -31,11 +47,11 @@ export default function (router) {
                 projectId,
                 estimate,
                 assignedTo: {
-                    connect: assignedTo.map(id => ({ id }))
+                    connect: uniqueAssignedIds.map(id => ({ id }))
                 }
             },
-        })
-        res.status(201).json(task)
+        });
+        res.status(201).json(task);
     })
 
     router.delete('/tasks/:id', authenticateToken, async (req, res) => {
@@ -44,11 +60,4 @@ export default function (router) {
         })
         return res.status(204).json({ message: 'task deleted' })
     })
-
-
-
-
-
-
-
 }
