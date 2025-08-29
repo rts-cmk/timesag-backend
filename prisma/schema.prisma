@@ -10,15 +10,14 @@ generator client {
 }
 
 model User {
-    id              String           @id @default(cuid())
-    email           String           @unique
-    name            String?
-    password        String           @unique
-    createdAt       DateTime         @default(now())
-    updatedAt       DateTime         @updatedAt
-    timeEntries     TimeEntry[]
-    // removed assignedTasks relation, now using TaskAssignment for assignments
-    taskAssignments TaskAssignment[]
+    id        String     @id @default(cuid())
+    email     String     @unique
+    name      String?
+    password  String     @unique
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
+    role      String     @default("user")
+    taskUser  TaskUser[]
 }
 
 model Customer {
@@ -49,38 +48,26 @@ model Project {
 }
 
 model Task {
-    id          String           @id @default(cuid())
+    id          String     @id @default(cuid())
     title       String
     description String?
     projectId   String
-    estimate    Float
-    // removed assignedTo relation, now using TaskAssignment for assignments
-    assignments TaskAssignment[]
-    status      String           @default("venter")
-    createdAt   DateTime         @default(now())
-    updatedAt   DateTime         @updatedAt
-    project     Project          @relation(fields: [projectId], references: [id])
-    timeEntries TimeEntry[]
+    status      String     @default("venter")
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
+    project     Project    @relation(fields: [projectId], references: [id])
+    taskUser    TaskUser[]
 }
 
-model TimeEntry {
-    id        String   @id @default(cuid())
-    taskId    String
-    userId    String
-    date      DateTime
-    timeSpent Int
-    comment   String?
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    task      Task     @relation(fields: [taskId], references: [id])
-    user      User     @relation(fields: [userId], references: [id])
-}
-
-model TaskAssignment {
+model TaskUser {
     id         String   @id @default(cuid())
     taskId     String
     userId     String
     assignedAt DateTime @default(now())
+    estimate   Float // Estimated time for this user on this task
+    date       DateTime // Date of time entry
+    timeSpent  Int? // Actual time spent
+    comment    String?
     task       Task     @relation(fields: [taskId], references: [id])
     user       User     @relation(fields: [userId], references: [id])
 }
