@@ -10,14 +10,15 @@ generator client {
 }
 
 model User {
-    id            String      @id @default(cuid())
-    email         String      @unique
-    name          String?
-    password      String      @unique
-    createdAt     DateTime    @default(now())
-    updatedAt     DateTime    @updatedAt
-    timeEntries   TimeEntry[]
-    assignedTasks Task[]      @relation("AssignedTasks")
+    id              String           @id @default(cuid())
+    email           String           @unique
+    name            String?
+    password        String           @unique
+    createdAt       DateTime         @default(now())
+    updatedAt       DateTime         @updatedAt
+    timeEntries     TimeEntry[]
+    // removed assignedTasks relation, now using TaskAssignment for assignments
+    taskAssignments TaskAssignment[]
 }
 
 model Customer {
@@ -48,16 +49,17 @@ model Project {
 }
 
 model Task {
-    id          String      @id @default(cuid())
+    id          String           @id @default(cuid())
     title       String
     description String?
     projectId   String
     estimate    Float
-    assignedTo  User[]      @relation("AssignedTasks")
-    status      String      @default("venter")
-    createdAt   DateTime    @default(now())
-    updatedAt   DateTime    @updatedAt
-    project     Project     @relation(fields: [projectId], references: [id])
+    // removed assignedTo relation, now using TaskAssignment for assignments
+    assignments TaskAssignment[]
+    status      String           @default("venter")
+    createdAt   DateTime         @default(now())
+    updatedAt   DateTime         @updatedAt
+    project     Project          @relation(fields: [projectId], references: [id])
     timeEntries TimeEntry[]
 }
 
@@ -72,4 +74,13 @@ model TimeEntry {
     updatedAt DateTime @updatedAt
     task      Task     @relation(fields: [taskId], references: [id])
     user      User     @relation(fields: [userId], references: [id])
+}
+
+model TaskAssignment {
+    id         String   @id @default(cuid())
+    taskId     String
+    userId     String
+    assignedAt DateTime @default(now())
+    task       Task     @relation(fields: [taskId], references: [id])
+    user       User     @relation(fields: [userId], references: [id])
 }
