@@ -3,7 +3,12 @@ import { authenticateToken } from '../middleware.js'
 
 export default function (router) {
     router.get('/tasks', authenticateToken, async (req, res) => {
-        const tasks = await prisma.task.findMany()
+        const tasks = await prisma.task.findMany({
+            include: {
+                project: { include: { customer: true } },
+                user: true
+            }
+        })
         res.json(tasks)
     })
 
@@ -11,9 +16,9 @@ export default function (router) {
         const task = await prisma.task.findUnique(
             {
                 where: { id: req.params.id },
-                include: {
-                    
-                    project: { include: { customer: true } }
+                include: {      
+                    project: { include: { customer: true } },
+                    user: true
                 }
             }
         )
