@@ -29,16 +29,14 @@ export default function (router) {
     })
 
     router.post('/tasks', authenticateToken, async (req, res) => {
-        const { title, description, projectId, estimate, assignedTo } = req.body
+        const { title, description, projectId, estimate, userId } = req.body
         const task = await prisma.task.create({
             data: {
                 title,
                 description,
                 projectId,
                 estimate,
-                assignedTo: {
-                    connect: assignedTo.map(id => ({ id }))
-                }
+                userId
             },
         })
         res.status(201).json(task)
