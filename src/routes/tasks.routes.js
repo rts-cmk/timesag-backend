@@ -12,6 +12,7 @@ export default function (router) {
             {
                 where: { id: req.params.id },
                 include: {
+                    
                     project: { include: { customer: true } }
                 }
             }
@@ -52,3 +53,12 @@ export default function (router) {
 
 
 }
+
+
+
+/*
+
+icons[]
+
+
+*/

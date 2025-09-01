@@ -10,14 +10,14 @@ generator client {
 }
 
 model User {
-    id            String      @id @default(cuid())
-    email         String      @unique
-    name          String?
-    password      String      @unique
-    createdAt     DateTime    @default(now())
-    updatedAt     DateTime    @updatedAt
-    timeEntries   TimeEntry[]
-    assignedTasks Task[]      @relation("AssignedTasks")
+    id          String      @id @default(cuid())
+    email       String      @unique
+    name        String?
+    password    String      @unique
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
+    timeEntries TimeEntry[]
+    tasks       Task[]
 }
 
 model Customer {
@@ -53,12 +53,13 @@ model Task {
     description String?
     projectId   String
     estimate    Float
-    assignedTo  User[]      @relation("AssignedTasks")
+    userId      String?
     status      String      @default("venter")
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @updatedAt
     project     Project     @relation(fields: [projectId], references: [id])
     timeEntries TimeEntry[]
+    User        User?       @relation(fields: [userId], references: [id])
 }
 
 model TimeEntry {
