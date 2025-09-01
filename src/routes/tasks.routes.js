@@ -18,7 +18,7 @@ export default function (router) {
                 where: { id: req.params.id },
                 include: {      
                     project: { include: { customer: true } },
-                    user: { where: { id: task.userId}}
+                    user: true
                 }
             }
         )
