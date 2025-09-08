@@ -8,19 +8,23 @@ export default function (router) {
     })
 
     router.get('/tasks/:id', authenticateToken, async (req, res) => {
-        const task = await prisma.task.findUnique(
-            {
-                where: { id: req.params.id },
-                include: {
-                    project: { include: { customer: true } }
-                }
+        const task = await prisma.task.findUnique({
+            where: { id: req.params.id },
+            include: {
+                project: { include: { customer: true } },
+                assignedTo: true // This includes assigned users
             }
-        )
+        });
         if (!task) {
-            return res.status(404).json({ message: 'task not found' })
+            return res.status(404).json({ message: 'task not found' });
         }
-        res.json(task)
-    })
+        // Remove password from assigned users
+        const sanitizedTask = {
+            ...task,
+            assignedTo: task.assignedTo.map(({ password, ...user }) => user)
+        };
+        res.json(sanitizedTask);
+    });
 
     router.post('/tasks', authenticateToken, async (req, res) => {
         const { title, description, projectId, estimate, assignedTo } = req.body
