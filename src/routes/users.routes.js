@@ -16,8 +16,8 @@ export default function (router) {
             {
                 where: { id: req.params.id },
                 include: {
-                    projects: true,
-                    customers: true,
+                    timeEntries: true,
+                    assignedTasks: true
                 }
             }
         )
@@ -30,7 +30,7 @@ export default function (router) {
 
 
 
-    
+
     router.post('/users', authenticateToken, async (req, res) => {
         const { email, name, password } = req.body
         const user = await prisma.user.create({
