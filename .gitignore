@@ -42,6 +42,10 @@ next-env.d.ts
 *.pem
 .vercel
 
+# Database
+/prisma/dev.db
+/prisma/dev.db-journal
+
 # Old files (can remove after testing)
 /src
 /netlify
