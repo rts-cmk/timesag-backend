@@ -2,7 +2,7 @@
 
 Unified frontend and backend application built with Next.js 15, TypeScript, Prisma, and PostgreSQL.
 
-## íº€ Quick Start
+## Quick Start
 
 ### 1. Setup Environment
 ```bash
@@ -27,7 +27,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000)
 
-## í³ Project Structure
+## Project Structure
 
 ```
 timesag-backend/
@@ -49,19 +49,19 @@ timesag-backend/
 â””â”€â”€ public/                # Static files
 ```
 
-## í´‘ Features
+## Features
 
-- âœ… JWT Authentication
-- âœ… Customer Management (CRUD)
-- âœ… Project Management (CRUD)
-- âœ… Task Management (CRUD)
-- âœ… User Management
-- âœ… Time Entry Tracking
-- âœ… Protected Routes
-- âœ… TypeScript
-- âœ… Tailwind CSS
+- JWT Authentication
+- Customer Management (CRUD)
+- Project Management (CRUD)
+- Task Management (CRUD)
+- User Management
+- Time Entry Tracking
+- Protected Routes
+- TypeScript
+- Tailwind CSS
 
-## í³ Available Scripts
+## Available Scripts
 
 ```bash
 npm run dev      # Start development server
@@ -70,7 +70,7 @@ npm start        # Run production server
 npm run lint     # Run ESLint
 ```
 
-## í·„ï¸ Database Commands
+## Database Commands
 
 ```bash
 npx prisma generate      # Generate Prisma Client
@@ -78,11 +78,9 @@ npx prisma migrate dev   # Run migrations
 npx prisma studio        # Open database GUI
 ```
 
-## í¾¯ Next Steps
+## Next Steps
 
 1. Create `.env` file with your database URL
 2. Run `npm run dev`
 3. Navigate to http://localhost:3000
 4. Log in with your credentials
-
-Enjoy! í¾‰
