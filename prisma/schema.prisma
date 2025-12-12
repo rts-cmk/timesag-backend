@@ -1,12 +1,10 @@
 datasource db {
-    provider = "postgresql"
+    provider = "sqlite"
     url      = env("DATABASE_URL")
 }
 
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["driverAdapters"]
-    engineType      = "library"
+    provider = "prisma-client-js"
 }
 
 model User {
@@ -14,6 +12,7 @@ model User {
     email       String      @unique
     name        String?
     password    String      @unique
+    avatar      String?
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @updatedAt
     timeEntries TimeEntry[]
@@ -55,6 +54,8 @@ model Task {
     estimate    Float
     userId      String?
     status      String      @default("venter")
+    fileUrl     String?
+    fileName    String?
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @updatedAt
     project     Project     @relation(fields: [projectId], references: [id])
